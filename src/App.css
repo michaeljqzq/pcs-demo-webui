@@ -1,0 +1,166 @@
+.App {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-flow: column;
+    font-family: 'Segoe UI';
+}
+
+.header {
+    flex: 0 0 50px;
+    background: #333333;
+}
+
+.header-bar {
+    display: flex;
+    align-items: center;
+    color: #f0f0f0;
+}
+
+.header-bar>* {
+    margin-left: 10px;
+}
+
+.logo {
+    height: 30px;
+    line-height: 50px;
+}
+
+.title {
+    line-height: 50px;
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+.body {
+    flex: 1;
+    height: 100%;
+    display: flex;
+}
+
+.body-left {
+    flex: 7;
+    display: flex;
+    flex-flow: column;
+}
+
+.status {
+    flex: 3;
+    display: flex;
+    justify-content: space-around;
+    background: #f0f0f0;
+}
+
+.display {
+    flex: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.heating-indicator {
+    position: absolute;
+    background: rgba(242, 41, 41, 0.2);
+    filter: blur(5px) drop-shadow(6px 6px 10px rgb(242, 41, 41)) drop-shadow(-6px -6px 10px rgb(242, 41, 41));
+    animation: 1s infinite ease-in-out alternate toggle;
+}
+
+@keyframes toggle {
+    from {
+        opacity: 0
+    }
+    to {
+        opacity: 1
+    }
+}
+
+.toilet {
+    width: 50%;
+    max-height: 80%;
+}
+
+.operation {
+    flex: 2;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.heating-switch {
+    width: 100px;
+    height: 100px;
+    border: 3px solid rgb(59, 68, 74);
+    border-radius: 8px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: 500;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all ease 0.3s;
+}
+
+.heating-switch:hover {
+    background: #d0d0d0;
+}
+
+.heating-switch-indicator {
+    width: 8px;
+    height: 24px;
+}
+
+@keyframes switching {
+    from {
+        background: red;
+        filter: blur(1px);
+    }
+    to {
+        background: #b0b0b0;
+    }
+}
+
+.heating-switch-indicator-on {
+    background: red;
+    filter: blur(1px);
+}
+
+.heating-switch-indicator-off {
+    background: #b0b0b0;
+}
+
+.heating-switch-indicator-switching {
+    animation: 0.5s infinite ease-in-out alternate switching;
+}
+
+.telemetry {
+    height: 370px;
+    padding: 5px 10px 5px 10px;
+}
+
+.body-right {
+    flex: 3;
+    background: #666666;
+    color: #f0f0f0;
+}
+
+.rule-item {
+    display: flex;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.rule-item-time {
+    flex: 2;
+    border-bottom: 1px dotted #000;
+}
+
+.rule-item-heating {
+    flex: 2;
+    border-bottom: 1px dotted #000;
+}
