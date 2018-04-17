@@ -88,7 +88,7 @@
     display: flex;
     flex-flow: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .heating-switch {
@@ -139,8 +139,27 @@
 }
 
 .telemetry {
-    height: 370px;
-    padding: 5px 10px 5px 10px;
+    height: 240px;
+    padding: 5px 20px;
+    display: flex;
+    flex-flow: column;
+}
+
+.telemetry > span {
+  margin-left: 0;
+}
+
+.telemetry > div {
+  font-size: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.color-indicator {
+  margin: 0 5px 0 10px;
+  height: 16px;
+  width: 16px;
 }
 
 .body-right {
@@ -152,15 +171,15 @@
 .rule-item {
     display: flex;
     margin-left: 20px;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .rule-item-time {
     flex: 2;
-    border-bottom: 1px dotted #000;
+    border-bottom: 1px dotted #b0b0b0;
 }
 
 .rule-item-heating {
     flex: 2;
-    border-bottom: 1px dotted #000;
+    border-bottom: 1px dotted #b0b0b0;
 }

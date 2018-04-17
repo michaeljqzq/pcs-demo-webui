@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Charts, ChartContainer, ChartRow, YAxis, LineChart } from "react-timeseries-charts";
-import { TimeSeries, TimeRange } from "pondjs";
+import { Charts, ChartContainer, ChartRow, YAxis, LineChart, EventChart } from "react-timeseries-charts";
+import { TimeSeries, TimeRange, TimeRangeEvent } from "pondjs";
 import logo from './asset/dashboard.svg';
 import toilet from './asset/toilet.svg';
 import './App.css';
 
 const REFRESH_SPAN_IN_SECONDS = 3;
+const HEATING_COLOR = "#f99766";
+const USAGE_COLOR = "#bafc80";
 
 class App extends Component {
   constructor(props) {
@@ -58,15 +60,13 @@ class App extends Component {
   mapTelemetry = (data, name) => {
     let d1 = {
       name,
-      columns: ['time', name],
-      points: []
+      events: [],
     }
     for(let d of data) {
-      d1.points.push([+new Date(d.start), 0]);
-      d1.points.push([+new Date(d.start), 1]);
-      d1.points.push([+new Date(d.end), 1]);
-      d1.points.push([+new Date(d.end), 0]);
+      let title = `From ${d.start} to ${d.end}`;
+      d1.events.push(new TimeRangeEvent(new TimeRange(new Date(d.start), new Date(d.end)), { name, title }));
     }
+    
     return new TimeSeries(d1);
   }
 
@@ -83,6 +83,25 @@ class App extends Component {
     }).then(()=>{
       this.refreshHeatingStatus();
     })
+  }
+
+  historyStyle = (event, state) => {
+    let color = event.get('name') === 'heating' ? HEATING_COLOR: USAGE_COLOR;
+    switch (state) {
+      case "normal":
+          return {
+              fill: color
+          };
+      case "hover":
+          return {
+              fill: color,
+              opacity: 0.4
+          };
+      case "selected":
+          return {
+              fill: color
+          };
+  }
   }
 
   render() {
@@ -121,23 +140,21 @@ class App extends Component {
               </div>
             </div>
             <div className="telemetry" ref={(input)=>{this.refTelemetry = input;}}>
-            {this.state.heatingSeries && <ChartContainer timeRange={timeRange} width={this.refTelemetry ? this.refTelemetry.clientWidth - 20: 800}>
-                  <ChartRow height="150">
-                      <YAxis id="axis1" tickCounts={1} label="Heating" min={this.state.heatingSeries.min()} max={this.state.heatingSeries.max()} width="60" type="linear" format=".2f"/>
+            <span className="title">Telemetry history</span>
+            {this.state.heatingSeries && this.state.usingSeries && <ChartContainer timeRange={timeRange} width={this.refTelemetry ? this.refTelemetry.clientWidth - 40: 800}>
+                  <ChartRow height="50">
                       <Charts>
-                          <LineChart axis="axis1" series={this.state.heatingSeries} columns={['heating']} />
+                          <EventChart textOffsetY={24} style={this.historyStyle} series={this.state.heatingSeries} label={e=>e.get('title')} />
                       </Charts>
                   </ChartRow>
-              </ChartContainer>}
-              {this.state.usingSeries && <ChartContainer timeRange={timeRange} width={this.refTelemetry ? this.refTelemetry.clientWidth - 20: 800}>
-                  <ChartRow height="150">
-                      <YAxis id="axis1" label="Usage" min={this.state.usingSeries.min()} max={this.state.usingSeries.max()} width="60" type="linear" format=".2f"/>
+                  <ChartRow height="50">
                       <Charts>
-                          <LineChart axis="axis1" series={this.state.usingSeries} columns={['using']}/>
+                        <EventChart textOffsetY={24} style={this.historyStyle} series={this.state.usingSeries} label={e=>e.get('title')} />
                       </Charts>
                   </ChartRow>
               </ChartContainer>}
               
+              <div><div style={{background:HEATING_COLOR}} className="color-indicator"></div>Heating history <div style={{background:USAGE_COLOR}} className="color-indicator"></div>Usage history</div>
             </div>
           </div>
           <div className="body-right">
